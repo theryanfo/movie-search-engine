@@ -1,3 +1,4 @@
+import '../css/MovieCard.css'
 
 function MovieCard({ movie }) {
 
@@ -6,10 +7,13 @@ function MovieCard({ movie }) {
         alert("implement favorite functionality")
     }
 
+    const BASE_URL = 'https://image.tmdb.org/t/p/w500';
+    const POSTER_URL = `${BASE_URL}${movie.poster_path}`;
+
     return (
         <div className="movie-card">
             <div className="movie-poster">
-                <img src={movie.poster} alt={movie.title} />
+                <img src={POSTER_URL} alt={movie.title} />
                 <div className="movie-overlay">
                     <button className="favorite-button" onClick={onFavoriteClick}>
                         ❤︎
