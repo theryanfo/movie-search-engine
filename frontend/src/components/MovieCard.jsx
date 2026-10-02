@@ -22,7 +22,7 @@ function MovieCard({ movie }) {
             </div>
             <div className="movie-info">
                 <h3 className="movie-title">{movie.title}</h3>
-                <p className="movie-year">{movie.year}</p>
+                <p className="movie-year">{movie.release_date.split('-')[0]}</p>
             </div>
         </div>
     )

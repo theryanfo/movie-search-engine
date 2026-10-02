@@ -11,7 +11,7 @@ function Home() {
 
     useEffect(() => {
         // Fetch popular movies
-       const loadPopularMovies = async () => {
+        const loadPopularMovies = async () => {
             setLoading(true);
             try {
                 const popularMovies = await getPopularMovies();
@@ -33,10 +33,25 @@ function Home() {
     //     { id: 3, title: "Your Name", year: 2016, poster: "https://upload.wikimedia.org/wikipedia/en/0/0b/Your_Name_poster.png?utm_source=en.wikipedia.org&utm_campaign=index&utm_content=original" }
     // ];
 
-    const handleSearch = (e) => {
+    const handleSearch = async (e) => {
         e.preventDefault();
         // Handle search logic here
-        alert(searchTerm);
+        if (!searchTerm.trim()) return;
+        if (loading) return;
+        
+        setLoading(true);
+
+        try {
+            const searchResults = await searchMovies(searchTerm);
+            setMovies(searchResults);
+            setError(null);
+        } catch (error) {
+            console.error("Error searching movies:", error);
+            setError(error);
+        } finally {
+            setLoading(false);
+        }
+
     };
 
     return (
@@ -53,13 +68,23 @@ function Home() {
                     Search
                 </button>
             </form>
+
+            {error && (
+                <div className="error-message">
+                    Error: {error}
+                </div>
+            )}
+
+            {loading ? (
+                <div className="loading">
+                    Loading movies...
+                </div>
+            ): (     
             <div className="movies-grid">
                 {movies.map((movie) => (
-                    movie.title.toLowerCase().includes(searchTerm.toLowerCase()) && (
                         <MovieCard key={movie.id} movie={movie} />
-                    )
                 ))}
-            </div>
+            </div> )}
         </div>
     )
 }
